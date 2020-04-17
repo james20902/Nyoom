@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="{{ url_for('static',    filename='css/chat.css') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>Connected!</title>
+</head>
+<body>
+    <div class="content">
+         <label>Chat here!</label>
+         <input name="inputbox" type="text">
+         <input name="submitbutton" type="submit" formmethod = 'post'>
+        <textarea name="chatbox" rows="4" cols="50" readonly></textarea>
+    </div>
+    <div class="sidenav">
+        <a href="{{ url_for('home') }}">get outta here im not done yet >:(</a>
+    </div>
+</body>
+</html>
