@@ -1,19 +1,40 @@
-import nmap
+import socket
+import os
+import base64
+from cryptography.fernet import Fernet
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-# initialize the port scanner
-nmScan = nmap.PortScanner()
+password = b"password"  # skip this entirely and hash by time?
+salt = os.urandom(16)
+kdf = PBKDF2HMAC(
+    algorithm=hashes.SHA256(),
+    length=32,
+    salt=salt,
+    iterations=100000,  # this needs testing
+    backend=default_backend())
 
-# scan localhost for ports in range 21-443
-nmScan.scan('127.0.0.1', '21-443')
+f = Fernet(base64.urlsafe_b64encode(kdf.derive(password)))
 
-# run a loop to print all the found result about the ports
-for host in nmScan.all_hosts():
-    print('Host : %s (%s)' % (host, nmScan[host].hostname()))
-    print('State : %s' % nmScan[host].state())
-    for proto in nmScan[host].all_protocols():
-        print('----------')
-        print('Protocol : %s' % proto)
+HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
+PORT = 25565  # minecraft???
 
-        lport = nmScan[host][proto].keys()
-        for port in lport:
-            print('port : %s\tstate : %s' % (port, nmScan[host][proto][port]['state']))
+tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+tcpsock.bind((HOST, PORT))
+print('Awaiting connection at ' + HOST + ' with port ' + str(PORT))
+
+tcpsock.listen()  # await connection
+
+conn, addr = tcpsock.accept()
+
+print('Connected by', addr)
+
+while True:
+    data = conn.recv(1024)
+
+    if not data:
+        break
+
+    print(f.decrypt(data))
