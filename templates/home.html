@@ -3,9 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Homepage</title>
+    <link rel="stylesheet" href="{{ url_for('static',    filename='css/home.css') }}">
 </head>
 <body>
-<h1> Welcome to Nyoom! </h1>
-<p>There's nothing here right now, but im sure there'll be more stuff eventually</p>
+    <h1> Welcome to Nyoom! </h1>
+    <div class="connection">
+        <p>enter the ip and port here:</p>
+        <form action="{{url_for('home')}}" method="post">
+            <label>ip</label>
+            <input name="ipbox" type="text" required>
+            <label>port</label>
+            <input name="portbox" type="text" required>
+            <input name="submitbutton" type="submit">
+        </form>
+    </div>
 </body>
 </html>

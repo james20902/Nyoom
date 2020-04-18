@@ -2,28 +2,31 @@ import socket
 import time
 from cryptography.fernet import Fernet
 
-HOST = '127.0.0.1'  # Standard loopback interface address (localhost)
-PORT = 25565  # minecraft???
+class Client:
 
-tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    HOST = ''  # Standard loopback interface address (localhost)
+    PORT = 0  # minecraft???
+    key = b''
+    encoder = 0
 
-while True:
-    try:
-        tcpsock.connect((HOST, PORT))
-        break
-    except ConnectionRefusedError:
-        print('server unavailable, retrying')
-        time.sleep(1)
+    tcpsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-key = tcpsock.recv(61)  # hardcoded keysize, this needs to change
-print('connected to server, key: ' + str(key))
+    def validate(self, ip, port):
+        try:
+            self.tcpsock.connect((ip, port))
+        except ConnectionRefusedError:
+            return False
+        self.key = self.tcpsock.recv(61)  # hardcoded keysize, this needs to change
+        self.encoder = Fernet(self.key)
+        self.HOST = ip
+        self.PORT = port
+        print('connected to server, key: ' + str(self.key))
+        return True
 
-encryptor = Fernet(key)
-
-while True:
-    try:
-        tosend = input('say something').encode()
-        tcpsock.send(encryptor.encrypt(tosend))
-    except ConnectionResetError:
-        print('server disconnected')
-        exit()
+    def send_message(self, content):
+        try:
+            self.tcpsock.send(self.encoder.encrypt(content.encode()))
+        except ConnectionResetError:
+            print('server disconnected')
+            return False
+        return True

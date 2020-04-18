@@ -7,10 +7,12 @@
 </head>
 <body>
     <div class="content">
-         <label>Chat here!</label>
-         <input name="inputbox" type="text">
-         <input name="submitbutton" type="submit" formmethod = 'post'>
-        <textarea name="chatbox" rows="4" cols="50" readonly></textarea>
+        <label>Chat here!</label>
+        <form action="{{url_for('home')}}" method="post">
+             <input name="inputbox" type="text">
+             <input name="submitbutton" type="submit" formmethod = 'post'>
+        </form>
+        <textarea name="chatbox" rows="4" cols="80" readonly></textarea>
     </div>
     <div class="sidenav">
         <a href="{{ url_for('home') }}">get outta here im not done yet >:(</a>

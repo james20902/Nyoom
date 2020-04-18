@@ -9,7 +9,8 @@ body {
 
 textarea[name=chatbox] {
     resize: none;
-    width: 70%;
+    width: 100%;
+    max-width: 800px;
 }
 
 input[name=inputbox]{
@@ -55,7 +56,6 @@ input[name=inputbox]:focus {
 
 /* Style the content */
 .content {
-
   margin-left: 200px;
   padding-left: 20px;
 }
