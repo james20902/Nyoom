@@ -1,14 +1,17 @@
-const http = require('http');
+var app = angular.module('Nyoom', []);
 
-const hostname = '127.0.0.1';
-const port = 3000;
+app.controller('MainController', [
+    '$scope',
+    function($scope){
+        $scope.contactList = [
+            {personName: 'i literally', personID: 0},
+            {personName: 'want to', personID: 1},
+            {personName: 'kill myself', personID: 2},
+            {personName: 'please help', personID: 3}
+        ];
 
-const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World');
-});
+        $scope.addContact = function(){
+            $scope.contactList.push({personName: $scope.personName, personID: $scope.personID});
+        };
+    }]);
 
-server.listen(port, hostname, () => {
-    console.log(`Server running at http://${hostname}:${port}/`);
-});

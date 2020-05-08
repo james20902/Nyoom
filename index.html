@@ -1,0 +1,17 @@
+<head>
+    <title>Nyoom</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="app.js"></script>
+</head>
+<body ng-app="Nyoom" ng-controller="MainController">
+<h1> NIGHTMARE NIGHTMARE NIGHTMARE </h1>
+<div ng-repeat="contact in contactList | orderBy: 'personID' ">
+    Contact name: "{{contact.personName}}" Contact ID: "{{contact.personID}}"
+</div>
+<form ng-submit="addContact()">
+    <input type="text" ng-model="personName">
+    <input type="number" ng-model="personID">
+    <button type="submit">add contact</button>
+</form>
+</body>
+</html>
